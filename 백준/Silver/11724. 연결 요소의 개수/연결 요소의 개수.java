@@ -6,6 +6,8 @@ public class Main {
     static int line; //간선 개수
     static boolean[] visit;
     static int[][] arr;
+    static Queue<Integer> q = new LinkedList<>();
+
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,7 +30,7 @@ public class Main {
         int result = 0;
         for (int i = 1; i <= node; i++) {
             if (visit[i] == false) { //방문한 적 없는 노드하면 dfs
-                dfs(i);
+                bfs(i);
                 result++;
             }
         }
@@ -36,12 +38,20 @@ public class Main {
 
     }
 
-    public static void dfs(int start) {
+    public static void bfs(int start) {
+        q.add(start);
         visit[start] = true;
-        for (int i = 1; i <= node; i++) {
-            if (arr[start][i] == 1 && visit[i] == false) {
-                dfs(i);
+
+        while (!q.isEmpty()) {
+            int temp = q.poll();
+
+            for (int i = 1; i <= node; i++) {
+                if (arr[temp][i] == 1 && !visit[i]) {
+                    q.add(i);
+                    visit[i] = true;
+                }
             }
         }
+
     }
 }
