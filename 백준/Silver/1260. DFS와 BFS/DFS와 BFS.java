@@ -24,14 +24,13 @@ public class Main {
 		check = new boolean[node+1];
 		
 		for(int i = 0 ; i < line ; i ++) {
-			StringTokenizer str = new StringTokenizer(br.readLine());
+			st = new StringTokenizer(br.readLine());
 			
-			int a = Integer.parseInt(str.nextToken());
-			int b = Integer.parseInt(str.nextToken());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
 			
 			arr[a][b] = arr[b][a] =  1;	
 		}
-			//sb.append("\n");
 			dfs(start);
 			sb.append("\n");
 			check = new boolean[node+1];
