@@ -1,77 +1,74 @@
-import java.io.*;
 import java.util.*;
-
+import java.io.*;
 public class Main {
-    private static int dx[] = {0,0,1,-1};
-    private static int dy[] = {1,-1,0,0};
-    private static int[] aparts = new int[25*25];
-    private static int n;
-    private static int apartNum = 0; //아파트 단지 번호의 수
-    private static boolean[][] visited = new boolean[25][25]; //방문여부
-    private static int[][] map = new int[25][25]; //지도
+    public static int N;
+    public static int[][] arr;
+    public static boolean[][] vtd;
+    public static ArrayList<Integer> list;
+    public static int[] dx = {-1, 0, 1, 0};
+    public static int[] dy = {0, -1, 0, 1};
+    public static void solve(int pp, int qq) {
+        Queue<int[]> q = new LinkedList<>();
+        vtd[pp][qq] = true; //방문 처리
+        q.add(new int[]{pp, qq});
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
+        int size = 1;
+        //q에 값이 있으면
+        while (!q.isEmpty()) {
+            int[] tmp = q.poll();
+            int x = tmp[0];
+            int y = tmp[1];
 
-        map = new int[n][n];
-        visited = new boolean[n][n];
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
 
-        //전체 사각형 입력 받기
-        for(int i=0; i<n; i++){
-            String input = sc.next();
-            for(int j=0; j<n; j++){
-                map[i][j] = input.charAt(j)-'0';
-             }
+                if (nx < 0 || ny < 0 || nx >= N || ny >= N || arr[nx][ny] == 0 || vtd[nx][ny]) {
+                    continue;
+                } else {
+                    vtd[nx][ny] = true;
+                    q.add(new int[]{nx, ny});
+                    size++;
+                }
+
+            }
+        }
+        list.add(size);
+    }
+
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken()); //N x N
+        arr = new int[N][N];
+        vtd = new boolean[N][N];
+        list = new ArrayList<>();
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            String str = st.nextToken();
+            for (int j = 0; j < N; j++) {
+                arr[i][j] = Character.getNumericValue(str.charAt(j));
+            }
         }
 
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                if(map[i][j] == 1 && !visited[i][j]){
-                    apartNum++;
-                    bfs(i,j);
+        int count = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                //아직 방문되지 않았고, 1인 경우
+                if (!vtd[i][j] && arr[i][j] == 1) {
+                    count++;
+                    solve(i, j); //방문처리
                 }
             }
         }
-
-        Arrays.sort(aparts);
-        System.out.println(apartNum);
-
-        for(int i=0; i<aparts.length; i++){
-            if(aparts[i] == 0){
-            }else{
-                System.out.println(aparts[i]);
-            }
+        System.out.println(count);
+        Collections.sort(list);
+        StringBuilder sb = new StringBuilder();
+        for (Integer integer : list) {
+            sb.append(integer).append("\n");
         }
-
-}
-
-    private static void bfs(int x, int y) {
-        //2차원 LinkedList를 가진 큐 선언
-        Queue<int[]> que = new LinkedList<>();
-        que.add(new int[]{x,y});
-        visited[x][y] = true;
-        aparts[apartNum]++;
-
-        while(!que.isEmpty()){
-
-            //x, y 값을 받아오기 위한 방법
-            int curX = que.peek()[0];
-            int curY = que.peek()[1];
-            que.poll();
-
-            for(int i=0; i<4; i++){
-                int nx = curX + dx[i];
-                int ny = curY + dy[i];
-
-                if(nx >= 0 && ny >= 0 && nx < n && ny < n){
-                    if(map[nx][ny] == 1 && !visited[nx][ny]){
-                        que.add(new int[]{nx,ny});
-                        visited[nx][ny] = true;
-                        aparts[apartNum]++;
-                    }
-                }
-            }
-        }
+        System.out.println(sb.toString());
     }
 }
