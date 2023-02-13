@@ -5,7 +5,7 @@ public class Main {
     static int M;
     static ArrayList<Integer>[] A;
     static boolean[] visited;
-    static boolean arrive;
+    static boolean arrive = false;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -13,7 +13,6 @@ public class Main {
         M = Integer.parseInt(st.nextToken()); //친구 관계수
         visited = new boolean[N];
         A = new ArrayList[N];
-        arrive = false;
 
         //리스트 초기화
         for (int i = 0; i < N; i++) {
