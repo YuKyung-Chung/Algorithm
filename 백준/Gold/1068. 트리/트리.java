@@ -8,9 +8,9 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         N = sc.nextInt(); //노드 개수
 
-        visited = new boolean[N + 1];
+        visited = new boolean[N];
 
-        tree = new ArrayList[N + 1];
+        tree = new ArrayList[N];
         //tree 초기화
         for (int i = 0; i < N; i++) {
             tree[i] = new ArrayList<>();
