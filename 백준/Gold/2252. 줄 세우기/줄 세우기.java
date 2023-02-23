@@ -6,17 +6,17 @@ public class Main {
         int N = sc.nextInt();
         int M = sc.nextInt();
 
-        ArrayList<ArrayList<Integer>> A = new ArrayList<>();
+        ArrayList<Integer>[] A = new ArrayList[N+1];
         //인접 리스트 초기화
         for (int i = 0; i <= N; i++) {
-            A.add(new ArrayList<>());
+            A[i] = new ArrayList<>();
         }
         //진입 차수 배열
         int[] indegree = new int[N + 1];
         for (int i = 0; i < M; i++) {
             int S = sc.nextInt();
             int E = sc.nextInt();
-            A.get(S).add(E);
+            A[S].add(E);
             indegree[E]++;
         }
         //진입 차수 배열 데이터 저장하기
@@ -29,7 +29,7 @@ public class Main {
         while (!q.isEmpty()) {
             int now = q.poll();
             System.out.println(now + " ");
-            for (int next : A.get(now)) {
+            for (int next : A[now]) {
                 indegree[next]--;
                 if (indegree[next] == 0) {
                     q.offer(next);
