@@ -1,8 +1,8 @@
 import java.util.*;
 class Solution {
     public int[] solution(int[] prices) {
-        int[] answer = new int[prices.length];
-        Stack<Integer> stack = new Stack<>();
+        int[] answer = new int[prices.length]; //정답 저장할 배열 선언
+        Stack<Integer> stack = new Stack<>(); //스택 선언
 
         for (int i = 0; i < prices.length; i++) {
             while (!stack.isEmpty() && prices[i] < prices[stack.peek()]) {
