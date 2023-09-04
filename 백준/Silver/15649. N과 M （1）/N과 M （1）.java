@@ -1,47 +1,48 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.StringTokenizer;
- 
+import java.util.Scanner;
+
 public class Main {
- 
-	public static int[] arr;
-	public static boolean[] visit;
-	public static StringBuilder sb = new StringBuilder();
- 
-	public static void main(String[] args) throws IOException {
- 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
- 
-		StringTokenizer st = new StringTokenizer(br.readLine());
- 
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
- 
-		arr = new int[M];
-		visit = new boolean[N];
-		dfs(N, M, 0);
+	static int  N,M;
+	static int[] sel;
+	static boolean[] visited;
+	static StringBuilder sb;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		N = sc.nextInt();
+		M = sc.nextInt();
+		sel = new int[M];
+		visited = new boolean[N];
+		sb = new StringBuilder();
+		
+		perm(0,0);
 		System.out.println(sb);
- 
 	}
- 
-	public static void dfs(int N, int M, int depth) {
-		if (depth == M) {
-			for (int val : arr) {
-				sb.append(val).append(' ');
+	
+	public static void perm(int idx, int sidx) {
+		
+		if(sidx == M) {
+			//sysout으로 출력하면 시간초과 뜸
+//			for (int i = 0; i < sel.length; i++) {
+//				System.out.print(sel[i]+ " ");
+//			}
+//			System.out.println();
+			for(int val: sel) {
+				sb.append(val).append(" ");
 			}
-			sb.append('\n');
+			sb.append("\n");
 			return;
 		}
- 
+		
+		if(idx == M) return;
+		
 		for (int i = 0; i < N; i++) {
-			if (!visit[i]) {
-				visit[i] = true;
-				arr[depth] = i + 1;
-				dfs(N, M, depth + 1);
-				visit[i] = false;
+			if(!visited[i]) {
+				visited[i] = true;
+				sel[sidx] = i+1;
+				perm(idx+1, sidx+1);
+				visited[i] = false;
 			}
+			
 		}
+		
 	}
- 
 }
