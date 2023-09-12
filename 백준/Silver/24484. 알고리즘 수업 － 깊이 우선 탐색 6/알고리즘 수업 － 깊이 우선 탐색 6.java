@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -65,12 +64,11 @@ public class Main {
 		if(edges[cur].size() == 0) return;
 		
 		depth[cur] = d;
-		order[cur] = idx;
+		order[cur] = idx++;
 		
 		for (int next : edges[cur]) {
 			if(depth[next] != -1) continue;
 			
-			order[next] = idx++;
 			DFS(next, d+1);
 		}
 	} //DFS
