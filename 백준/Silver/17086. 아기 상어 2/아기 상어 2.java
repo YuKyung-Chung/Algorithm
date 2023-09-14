@@ -3,7 +3,7 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-	static int N,M, min;
+	static int N,M;
 	static int[][] arr;
 	static boolean[][] visited;
 	static int[] dx = {1,-1,0,0,1,1,-1,-1}; //8방향으로 이동할 좌표
@@ -24,11 +24,12 @@ public class Main {
 		
 		int max = Integer.MIN_VALUE;
 		
-		min = 1234567;
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < M; j++) {
 				if(arr[i][j] == 0) {
-					visited = new boolean[N][M];
+					//위치 옮길때마다 visited 배열 초기화
+					visited = new boolean[N][M]; 
+					//안전거리 최대값 갱신
 					max = Math.max(max, bfs(i,j));
 				}
 			}
@@ -55,29 +56,22 @@ public class Main {
 					int y = dy[i] + pos[1];
 					
 					//범위 벗어나면 바로 종료
-					if(x<0 || y<0 || x>=N || y>=M) continue;
-					
-					//범위 벗어나는지 체크
-					if(x>=0 && y>=0 && x<N && y<M) {
-						if(visited[x][y]) continue;
-						
-						//상어 안만났을 때
-						if(arr[x][y] == 0) {
-							visited[x][y] = true;
-							q.offer(new int[] {x,y});
-						}
-						//상어 만나면 바로 종료
-						else {
-							min = Math.min(min, dist);
-							return dist;
-						}
+					if(x<0 || y<0 || x>=N || y>=M || visited[x][y]) continue;
+											
+					//상어 안만났을 때
+					if(arr[x][y] == 0) {
+						visited[x][y] = true; //방문처리
+						q.offer(new int[] {x,y}); //큐에 추가
+					}
+					//상어 만나면 바로 종료
+					else {
+						return dist;
 					}
 				}
 			}
 			dist++;
 		}
-		
-		return min;
+		return dist;
 		
 	}//bfs
 }
