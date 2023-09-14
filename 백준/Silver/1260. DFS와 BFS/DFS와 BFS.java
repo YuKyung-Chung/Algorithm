@@ -8,7 +8,7 @@ public class Main {
 	static int N,M,V,idx;
 	static ArrayList<Integer>[] arr;
 	static boolean[] visited;
-	static StringBuilder sb, sb2;
+	static StringBuilder dfs, bfs;
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -33,29 +33,26 @@ public class Main {
 			Collections.sort(arr[i]);
 		}
 		
-		sb = new StringBuilder();
-		idx = 1;
+		dfs = new StringBuilder();
 		visited = new boolean[N+1];
 		DFS(V);
 		
-		sb2 = new StringBuilder();
-		idx = 1;
+		bfs = new StringBuilder();
 		visited = new boolean[N+1];
 		BFS(V);
 
-		System.out.println(sb);
-		System.out.println(sb2);
+		System.out.println(dfs);
+		System.out.println(bfs);
 		
 	} //main
 	
 	public static void DFS(int v) {
-		sb.append(v+" ");
+		dfs.append(v+" ");
 		visited[v] = true;
 		
 		for (int next : arr[v]) {
 			if(visited[next]) continue;
 			
-			idx++;
 			visited[next] = true;
 			DFS(next);
 		}
@@ -65,7 +62,7 @@ public class Main {
 		Queue<Integer> q = new LinkedList<>();
 		q.offer(v);
 		visited[v] = true;
-		sb2.append(v+ " ");
+		bfs.append(v+ " ");
 				
 		while(!q.isEmpty()) {
 			int a = q.poll();
@@ -75,7 +72,7 @@ public class Main {
 				
 				q.offer(next);
 				visited[next] = true;
-				sb2.append(next+" ");
+				bfs.append(next+" ");
 			}
 		}
 		
