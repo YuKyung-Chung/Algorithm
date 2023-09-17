@@ -1,51 +1,64 @@
-import java.io.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
 public class Main {
-    static boolean[][] visited;
-    //상하좌우 탐색하기 위한 배열 선언하기
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {1, 0, -1, 0};
-    static int N, M;
-    static int[][] A;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        visited = new boolean[N][M];
-        A = new int[N][M];
-
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            String line = st.nextToken();
-            for (int j = 0; j < M; j++) {
-                A[i][j] = Integer.parseInt(line.substring(j, j + 1));
-            }
-        }
-        BFS(0, 0);
-        System.out.println(A[N-1][M-1]);
-    }
-
-    public static void BFS(int n, int m) {
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{n, m});
-        visited[n][m] = true;
-
-        while (!q.isEmpty()) {
-            int now[] = q.poll();
-            for (int i = 0; i < 4; i++) {
-                int X = now[0] + dx[i];
-                int Y = now[1] + dy[i];
-                //좌표 유효성 검사하기
-                if (X >= 0 && Y >= 0 && X < N && Y < M) {
-                    //갈 수 있는 칸이면서 방문하지 않은 칸이면 방문하기
-                    if (A[X][Y] == 1 && !visited[X][Y]) {
-                        visited[X][Y] = true;
-                        A[X][Y] = A[now[0]][now[1]] + 1; //깊이 업데이트하기
-                        q.add(new int[]{X, Y});
-                    }
-                }
-            }
-        }
-    }
+	static int N,M,min;
+	static int[][] arr;
+	static int[] dx = {1,-1,0,0};
+	static int[] dy = {0,0,1,-1};
+	static boolean[][] visited;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		N = sc.nextInt();
+		M = sc.nextInt();
+		arr = new int[N][M];
+		
+		//배열에 값 채우기
+		for (int i = 0; i < N; i++) {
+			String str = sc.next();
+			for (int j = 0; j < M; j++) {
+				arr[i][j] = Integer.parseInt(str.substring(j,j+1));
+			}
+		}
+	
+		visited = new boolean[N][M];
+		min = Integer.MAX_VALUE;
+		
+		BFS(0,0);
+		System.out.println(arr[N-1][M-1]);
+	}//main
+	
+	public static void BFS(int i, int j) {
+		Queue<int[]> q = new LinkedList<>();
+		q.add(new int[] {i,j});
+		visited[i][j] = true;
+		int cnt = 1;
+		
+		while(!q.isEmpty()) {
+			int[] cur = q.poll();
+			int x = cur[0];
+			int y = cur[1];
+			
+			//인접한 4칸으로만 이동 가능
+			for (int k = 0; k <4; k++) {
+				int nx = dx[k] + cur[0];
+				int ny = dy[k] + cur[1];
+					
+				if(nx >= 0 && ny >= 0 && nx < N && ny < M) {
+					if(visited[nx][ny] || arr[nx][ny] == 0) continue;
+							
+					if(arr[nx][ny] == 1 && !visited[nx][ny]) {
+						visited[nx][ny] = true;
+						q.add(new int[] {nx,ny});
+						arr[nx][ny] = arr[x][y] + 1;
+					} 
+				}
+					
+			}
+		}
+		
+	}//BFS
 }
+
