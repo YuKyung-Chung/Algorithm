@@ -1,37 +1,50 @@
-import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int[] height = new int[9];
-        int sum = 0;
-        int A = 0;
-        int B = 0;
+	static int[] arr;
+	static int[] comb; //조합 임시 저장 배열
+	static int idx = 0;
+	static int N = 7;
+	static StringBuilder sb;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		arr= new int[9];
+		comb = new int[7];
+		
+		for (int i = 0; i < 9; i++) {
+			arr[i] = sc.nextInt();
+		}
+		Arrays.sort(arr);
+		
+		combination(0,0);
+		System.out.println(sb);
+		
+	}//main
+	
+	public static void combination(int cur, int cidx) {
+		int sum = 0;
+		if(cidx == N) {
+			for (int i = 0; i < comb.length; i++) {
+				sum += comb[i];
+			}
+			if(sum == 100) {
+				sb = new StringBuilder();
+				for (int i = 0; i < comb.length; i++) {
 
-        for (int i = 0; i < 9; i++) {
-            height[i] = Integer.parseInt(br.readLine());
-            sum += height[i];
-        }
-        Arrays.sort(height); //난쟁이 키 오름차순으로 정렬
-
-        //가짜 난쟁이 판별
-        for (int i = 0; i < 8; i++) {
-            for (int j = i + 1; j < 9; j++) {
-                if (sum - height[i] - height[j] == 100) {
-                    A = i;
-                    B = j;
-                    break;
-                }
-            }
-        }
-
-        //진짜 난쟁이 출력
-        for (int i = 0; i < 9; i++) {
-            if (i == A || i == B) {
-                continue;
-            }
-            System.out.println(height[i]);
-        }
-
-    }
+					sb.append(comb[i]+"\n");
+				}
+			}
+			return;
+		}
+		
+		if(cur == arr.length) return;
+		
+		comb[cidx] = arr[cur];
+		combination(cur+1, cidx+1);
+		combination(cur+1, cidx);
+		
+		
+	}
 }
