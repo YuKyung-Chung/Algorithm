@@ -1,40 +1,51 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        StringTokenizer st1 = new StringTokenizer(br.readLine(), " ");
-        int N = Integer.parseInt(st1.nextToken());
-        int M = Integer.parseInt(st1.nextToken());
-        int[] arr = new int[N];
-
-        StringTokenizer st2 = new StringTokenizer(br.readLine()," ");
-
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(st2.nextToken());
-        }
-        br.close();
-        
-        Arrays.sort(arr);
-
-        int max = 0;
-
-        for (int i = 0; i < N - 2; i++) {
-            for (int j = i + 1; j < N - 1; j++) {
-                for (int k = j + 1; k < N; k++) {
-                    int sum = arr[i] + arr[j] + arr[k];
-
-                    if (sum <= M && sum > max) {
-                        max = sum;
-                    }
-                }
-            }
-        }
-        System.out.println(max);
-    }
+	static int N,M, sum, answer, minSum;
+	static int[] cards;
+	static int[] temp; //임시 조합한 카드 저장할 배열
+	static boolean[] visited;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		N = sc.nextInt();
+		M = sc.nextInt();
+		
+		//합이 M을 넘지 않으면서 M에 최대한 가까운 카드 3장의 합 출력
+		cards = new int[N];
+		for (int i = 0; i < N; i++) {
+			cards[i] = sc.nextInt();
+		}
+		
+		temp = new int[3];
+		visited = new boolean[N];
+		answer=Integer.MAX_VALUE;
+		minSum = Integer.MAX_VALUE;
+		
+		combination(0,0);
+		System.out.println(answer);
+	}
+	
+	public static void combination(int idx, int sidx) {
+		sum = 0;
+		
+		if(sidx == 3) {
+			for (int i = 0; i < temp.length; i++) {
+				sum += temp[i];
+			}
+			
+			if(sum <= M && Math.abs(sum-M) <= minSum) {
+				minSum = Math.abs(sum-M);
+				answer = sum;
+			}
+			return;
+		}
+		
+		if(idx == N) return;
+		
+		temp[sidx] = cards[idx];
+		combination(idx+1, sidx+1);
+		combination(idx+1, sidx);
+	}
 }
