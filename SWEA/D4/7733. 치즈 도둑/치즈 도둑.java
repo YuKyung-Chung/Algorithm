@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Solution {
-	static int N, max, answer;
+	static int N, max;
 	static int[][] arr;
 	static int[] dx = {1,-1,0,0};
 	static int[] dy = {0,0,1,-1};
@@ -15,19 +15,17 @@ public class Solution {
 		int T = sc.nextInt(); //테스트 케이스 개수
 		for (int tc = 1; tc <= T; tc++) {
 			N = sc.nextInt(); //치즈 한 변의 길이
-			arr = new int[N][N];
-			max = -1;
+			arr = new int[N][N]; //치즈 정보 저장할 배열
 			
 			//치즈 정보 입력
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
 					arr[i][j] = sc.nextInt();
-					max = Math.max(max, arr[i][j]);
 				}
 			}
 			
-			answer = -1;
-			tmp: for (int day = 0; day <= max; day++) {
+			max = -1;
+			tmp: for (int day = 0; day <= 100; day++) {
 				
 				for (int i = 0; i < N; i++) {
 					for (int j = 0; j < N; j++) {
@@ -47,11 +45,11 @@ public class Solution {
 						}
 					}
 				}
-				answer = Math.max(answer, cnt);
+				max = Math.max(max, cnt);
 				
 			}
 			
-			System.out.printf("#%d %d\n", tc, answer);
+			System.out.printf("#%d %d\n", tc, max);
 		}//tc
 	} //main
 	
