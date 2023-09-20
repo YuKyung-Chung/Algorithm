@@ -1,55 +1,48 @@
-import java.util.*;
+import java.util.Scanner;
+
 public class Main {
-    static int[] parent;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int M = sc.nextInt();
-        parent = new int[N + 1];
-        //대표 노드 자기 자신으로 초기화하기
-        for (int i = 0; i <= N; i++) {
-            parent[i] = i;
-        }
-
-        for (int i = 0; i < M; i++) {
-            int question = sc.nextInt();
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            if (question == 0) {
-                union(a, b);
-            } else {
-                if (checkSame(a, b)) {
-                    System.out.println("YES");
-                } else {
-                    System.out.println("NO");
-                }
-            }
-        }
-    }
-
-    static void union(int a, int b) {
-        a = find(a);
-        b = find(b);
-        if (a != b) {
-            parent[b] = a;
-        }
-    }
-
-    static int find(int a) {
-        if (a == parent[a]) {
-            return a;
-        } else {
-            return parent[a] = find(parent[a]);
-        }
-    }
-
-    static boolean checkSame(int a, int b) {
-        a = find(a);
-        b = find(b);
-        if (a == b) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	static int[] p;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		int M = sc.nextInt();
+		p = new int[N+1];
+		
+		//makeset
+		for (int i = 1; i <= N; i++) {
+			p[i] = i;
+		}
+		
+		for (int i = 0; i < M; i++) {
+			int order = sc.nextInt();
+			int a = sc.nextInt();
+			int b = sc.nextInt();
+			
+			int pa = find(p[a]);
+			int pb = find(p[b]);
+			
+			if(order == 0) {
+				union(pa,pb);
+			} else if(order == 1) {
+				if(pa != pb) {
+					System.out.println("NO");
+				}else
+					System.out.println("YES");
+			}
+		}
+		
+	}//main
+	
+	public static void union(int x, int y) {
+		p[y] = x;
+	}
+	
+	public static int find(int x) {
+		if(p[x] != x) {
+			p[x] = find(p[x]);
+		}
+		
+		return p[x];
+	}
 }
