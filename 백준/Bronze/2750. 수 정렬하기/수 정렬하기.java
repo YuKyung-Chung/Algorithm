@@ -1,18 +1,21 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        StringBuilder sb = new StringBuilder();
-        int N = sc.nextInt();
-        int[] A = new int[N];
-        for(int i=0; i<N; i++){
-            int temp = sc.nextInt();
-            A[i] = temp;
-        }
-        Arrays.sort(A);
-        for(int i=0; i<N; i++){
-            sb.append(A[i]).append("\n");
-        }
-        System.out.print(sb);
-    }
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		int[] arr = new int[N];
+		
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(br.readLine());
+		}
+		
+		Arrays.sort(arr);
+		for (int i = 0; i < N; i++) {
+			System.out.println(arr[i]);
+		}
+	}
 }
