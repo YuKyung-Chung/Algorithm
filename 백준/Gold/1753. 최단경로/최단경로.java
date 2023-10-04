@@ -1,74 +1,89 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
-public class Main {
-    static int V,E,K;
-    static int[] distance;
-    static boolean[] visited;
-    static ArrayList<Edge>[] list;
-    static PriorityQueue<Edge> q = new PriorityQueue<>();
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        V = sc.nextInt(); //정점 개수
-        E = sc.nextInt(); //간선 개수
-        K = sc.nextInt(); //출발 노드
-        distance = new int[V + 1];
-        visited = new boolean[V + 1];
-        list = new ArrayList[V + 1];
-        for (int i = 1; i <= V; i++) {
-            list[i] = new ArrayList<>();
-        }
-        for (int i = 0; i <= V; i++) {
-            distance[i] = Integer.MAX_VALUE;
-        }
-        //가중치가 있는 인접 리스트 초기화하기
-        for (int i = 0; i < E; i++) {
-            int u = sc.nextInt();
-            int v = sc.nextInt();
-            int w = sc.nextInt();
-            list[u].add(new Edge(v, w));
-        }
-        //k를 시작점으로 초기화
-        q.add(new Edge(K, 0));
-        distance[K] = 0;
-        while (!q.isEmpty()) {
-            Edge current = q.poll();
-            int c_v = current.vertex;
-            if(visited[c_v]) continue; //이미 방문한 적이 있는 노드는 다시 큐에 넣지 않음
-            visited[c_v] = true;
-            for (int i = 0; i < list[c_v].size(); i++) {
-                Edge tmp = list[c_v].get(i);
-                int next = tmp.vertex;
-                int value = tmp.value;
-                if (distance[next] > distance[c_v] + value) { //최소 거리로 업데이트
-                    distance[next] = value + distance[c_v];
-                    q.add(new Edge(next, distance[next]));
-                }
-            }
-        }
-        //거리 배열 출력하기
-        for (int i = 1; i <= V; i++) {
-            if (visited[i]) {
-                System.out.println(distance[i]);
-            } else {
-                System.out.println("INF");
-            }
-        }
-    }
+
+class Node implements Comparable<Node>{
+	int end, weight;
+	
+	public Node(int end, int weight) {
+		this.end = end;
+		this.weight = weight;
+	}
+
+	@Override
+	public int compareTo(Node o) {
+		return weight - o.weight;
+	}
+	
+	
 }
 
-class Edge implements Comparable<Edge> {
-    int vertex;
-    int value;
-
-    Edge(int vertex, int value) {
-        this.vertex = vertex;
-        this.value = value;
-    }
-
-    public int compareTo(Edge edge) {
-        if (this.value > edge.value)
-            return 1;
-        else
-            return -1;
-    }
+public class Main {
+	private static final int INF = 1234567;
+	
+	static int V,E,K;
+	static List<Node>[] adjList;
+	static int[] dist;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		V = sc.nextInt();
+		E = sc.nextInt();
+		K = sc.nextInt(); //시작 정점의 번호
+		adjList = new ArrayList[V+1];
+		for (int i = 1; i <= V; i++) {
+			adjList[i] = new ArrayList<>();
+		}
+		dist = new int[V+1];
+		Arrays.fill(dist, INF);
+		
+		for (int i = 0; i < E; i++) {
+			int u = sc.nextInt();
+			int v = sc.nextInt();
+			int w = sc.nextInt();
+			
+			adjList[u].add(new Node(v,w));
+		}
+		
+		
+		dijkstra(K);
+		
+		for (int i = 1; i <= V; i++) {
+			if(dist[i] == INF) {
+				System.out.println("INF");
+			}else {
+				System.out.println(dist[i]);
+			}
+		}
+		
+	}//main
+	
+	public static void dijkstra(int start) {
+		PriorityQueue<Node> q = new PriorityQueue<Node>();
+		boolean[] visited = new boolean[V+1];
+		q.add(new Node(start,0));
+		dist[start] = 0;
+		
+		
+		while(!q.isEmpty()) {
+			Node curNode = q.poll();
+			int cur = curNode.end;
+			
+			if(visited[cur]) continue;
+			visited[cur] = true;
+			
+			
+			for(Node node : adjList[cur]) {
+				if(dist[node.end] > dist[cur] + node.weight) {
+					dist[node.end] = dist[cur] + node.weight;
+					q.add(new Node(node.end, dist[node.end]));
+				}
+				
+			}
+			
+		}
+	}
 }
