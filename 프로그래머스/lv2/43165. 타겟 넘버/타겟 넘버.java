@@ -1,15 +1,24 @@
+import java.util.*;
+import java.io.*;
+
 class Solution {
     static int answer = 0;
     public int solution(int[] numbers, int target) {
-        dfs(numbers, target, 0, 0);
+        //숫자배열, 노드 깊이, 타겟넘버, 이전까지의 합
+        DFS(numbers,0,target,0);
+        
         return answer;
     }
-    public void dfs(int[] numbers, int target, int depth, int sum){
+    
+    public static void DFS(int[] numbers, int depth, int target, int sum){
+        //마지막 노드까지 탐색한 경우
         if(depth == numbers.length){
-            if(target == sum) answer++;
-        } else{
-            dfs(numbers,target,depth+1,sum+numbers[depth]);
-            dfs(numbers,target,depth+1,sum-numbers[depth]);
+            if(sum == target) answer++;
+            return;
         }
+        
+        DFS(numbers, depth+1, target, sum + numbers[depth]);
+        DFS(numbers, depth+1, target, sum - numbers[depth]);
     }
+    
 }
