@@ -72,8 +72,7 @@ public class Solution {
 	}//main
 	
 	public static void comb(int cnt) {
-		
-		if(cnt >= people.size()) {
+		if(cnt == people.size()) {
 			max = calc();
 			answer = Math.min(answer, max);
 			return;
