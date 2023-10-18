@@ -1,29 +1,59 @@
-import java.io.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
 
 public class Main {
-    //동적 프로그래밍(DP)
-    static int[] dp;
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        int N = Integer.parseInt(st.nextToken());
-
-        dp = new int[N+1]; //연산 횟수 저장
-
-        //dp 초기화
-        dp[0] = dp[1] = 0;
-        for (int i = 2; i < N+1; i++) {
-            //-1 연산을 수행할 경우
-            dp[i] = dp[i - 1] + 1; //+1은 연산을 수행한 카운터를 하나 올려줌
-            if (i % 2 == 0) {
-                dp[i] = Math.min(dp[i], dp[i / 2] + 1); //비교
-            }
-            if (i % 3 == 0) {
-                dp[i] = Math.min(dp[i], dp[i / 3] + 1); //비교
-            }
-        }
-        System.out.println(dp[N]);
-    }
+	static int N;
+	static int cnt;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		N = sc.nextInt();
+		
+		int[] dp = new int[N+1];
+		
+		BFS(N);
+		
+		System.out.println(cnt);
+	}//main
+	
+	public static void BFS(int n) {
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(n);
+		
+		while(!q.isEmpty()) {
+			int a = q.size();
+			for (int i = 0; i < a; i++) {
+				int now = q.poll();
+				
+				if(now == 1) return;
+				
+				if(now % 3 == 0) {
+					if(now % 2 == 0) {
+						q.add(now/3);
+						q.add(now-1);
+						q.add(now/2);
+					}else if(now % 2 != 0) {
+						q.add(now/3);
+						q.add(now-1);
+					}
+				}else if(now % 2 == 0) {
+					if(now % 3 == 0) {
+						q.add(now-1);
+						q.add(now/2);
+						q.add(now/3);
+					}else if(now % 3 != 0) {
+						q.add(now/2);
+						q.add(now-1);
+					}
+				}else if(now % 3 != 0 && now % 2 != 0) {
+					q.add(now-1);
+				}
+			}
+			cnt++;
+		}
+		
+		
+	}
 }
