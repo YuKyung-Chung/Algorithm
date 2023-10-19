@@ -1,45 +1,53 @@
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int[] A = new int[N];
-        int[] S = new int[N];
-        for (int i = 0; i < N; i++) {
-            A[i] = sc.nextInt();
-        }
-        
-        //삽입 정렬
-        for (int i = 1; i < N; i++) {
-            int insert_point = 1;
-            int insert_value = A[i];
-            for (int j = i - 1; j >= 0; j--) {
-                if (A[j] < A[i]) {
-                    insert_point = j + 1;
-                    break;
-                }
-                if (j == 0) {
-                    insert_point = 0;
-                }
-            }
-            for (int j = i; j > insert_point; j--) {
-                A[j] = A[j - 1];
-            }
-            A[insert_point] = insert_value;
-        }
-        S[0] = A[0];
-        //합 배열 만들기
-        for (int i = 1; i < N; i++) {
-            S[i] = S[i - 1] + A[i];
-        }
-        //합 배열 총합 만들기
-        int sum = 0;
-        for (int i = 0; i < N; i++) {
-            sum += S[i];
-        }
-        System.out.println(sum);
-        
-    }
+	static class People implements Comparable<People>{
+		int num, P;
+		
+		public People(int num, int P) {
+			this.num = num;
+			this.P = P;
+		}
+
+		@Override
+		public int compareTo(People o) {
+			return this.P - o.P;
+		}
+	}
+	
+	static int N;
+	static int[] sum;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		N = sc.nextInt(); //사람의 수
+		sum = new int[N+1]; //누적합 저장할 배열
+		PriorityQueue<People> pq = new PriorityQueue<>();
+		
+		for (int i = 1; i <= N; i++) {
+			pq.add(new People(i,sc.nextInt()));
+		}
+		
+		sum[1] = pq.poll().P;
+		
+		List<Integer> list = new ArrayList<>();
+		while(!pq.isEmpty()){
+			for (int i = 2; i <= N; i++) {
+				People now = pq.poll();
+				
+				int num = now.num;
+				int P = now.P;
+				sum[i] = sum[i-1] + P;
+			}
+		}
+		
+		int answer = 0;
+		for (int i = 1; i <= N; i++) {
+			answer += sum[i];
+		}
+		System.out.println(answer);
+	}
 }
