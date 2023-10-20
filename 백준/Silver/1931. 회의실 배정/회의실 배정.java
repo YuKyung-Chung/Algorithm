@@ -1,31 +1,50 @@
-import java.util.*;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int[][] A = new int[N][2];
-        for (int i = 0; i < N; i++) {
-            A[i][0] = sc.nextInt();
-            A[i][1] = sc.nextInt();
-        }
-        Arrays.sort(A, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                if (o1[1] == o2[1]) { //종료시간이 같을 때
-                    return o1[0] - o2[0]; //시작시간 기준으로 정렬하기
-                }
-                return o1[1] - o2[1];
-            }
-        });
-        int count = 0;
-        int end = -1;
-        for (int i = 0; i < N; i++) {
-            if (A[i][0] >= end) { //겹치지 않는 다음 회의가 나온 경우
-                end = A[i][1]; //종료 시간 업데이트하기
-                count++;
-            }
-        }
-        System.out.println(count);
-    }
+	static class Rooms implements Comparable<Rooms>{
+		int st, ed;
+		
+		public Rooms(int st, int ed) {
+			this.st = st;
+			this.ed = ed;
+		}
+		
+		//끝나는 시간 순서대로 오름차순 정렬
+		@Override
+		public int compareTo(Rooms o) {
+			if(this.ed == o.ed) {
+				return this.st - o.st;
+			}
+			return this.ed - o.ed;
+		}
+	}
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		
+		PriorityQueue<Rooms> q = new PriorityQueue<>();
+		//회의실 정보 입력받기
+		for (int i = 0; i < N; i++) {
+			q.add(new Rooms(sc.nextInt(), sc.nextInt()));
+		}
+		
+		int cnt = 1;
+		Rooms now = q.poll();
+//		System.out.println(now.st);
+		while(!q.isEmpty()) {
+			Rooms r = q.poll();
+//			System.out.println(r.st);
+			//그 다음 회의 시작시간이 끝나는 시간 이후이면 가능
+			if(r.st >= now.ed) {
+				cnt++;
+				now = r; //현재 회의내용 갱신
+//				System.out.println(now.ed);
+			}
+			
+		}
+		System.out.println(cnt);
+	}//main
+	
 }
