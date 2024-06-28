@@ -29,10 +29,9 @@ public class Main {
 		}
 	}//main
 	
-	public static void perm(int idx, int sidx) {
+	public static void perm(int idx, int depth) {
 		//기저부분
-		if(sidx == M) {
-
+		if(depth == M) {
 			StringBuilder sb = new StringBuilder();
 			for (int val : sel) {
 				sb.append(val).append(" ");
@@ -41,25 +40,21 @@ public class Main {
 			sb.append("\n");
 			return;
 		}
-		if(idx == M) return;
+//		if(idx == M) return;
 						
 		//재귀부분
-		for (int i = 0; i < N; i++) {
-			if(visited[i]) continue;
-			
-			for(int j=0; j<=i; j++) {
-				visited[j] = true;
-				
-			}
-			sel[idx] = arr[i];
-			perm(idx+1, sidx+1);
-			perm(idx+1, sidx);
-			
-			for(int j=i; j<N; j++) {
-				visited[j] = false;
-				
+		for (int i = idx; i < N; i++) {
+			if(!visited[i]) {
+				for(int j=0; j<=i; j++) {
+					visited[j] = true;
+				}
+				sel[idx] = arr[i];
+				perm(idx+1, depth+1);
+				for(int j=i; j<N; j++) {
+					visited[j] = false;
+				}
 			}
 		}
-		
 	}//perm
 }
+
