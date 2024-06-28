@@ -1,40 +1,34 @@
 import java.util.Scanner;
 
 public class Main {
-	static int N,M;
-	static boolean[] visited;
-	static int[] sel;
+	//1부터 N까지 자연수 중 M개 고른 수열
+	//같은 수 중복 가능
+	static int[] selected;
 	static StringBuilder sb;
+	static int N,M;
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		N = sc.nextInt();
 		M = sc.nextInt();
-		sel = new int[M];
-		visited = new boolean[N];
+		selected = new int[M];
 		sb = new StringBuilder();
 		
-		perm(0,0);
-		System.out.println(sb);
-		
-	} //main
-	
-	public static void perm(int idx, int sidx) {
-		if(sidx == M) {
-			for (int val : sel){
+		perm(0);
+		System.out.println(sb);	
+	}
+	public static void perm(int depth) {
+		if(depth == M) {
+			for(int val : selected) {
 				sb.append(val).append(" ");
 			}
 			sb.append("\n");
 			return;
 		}
 		
-		if(idx == M) return;
-		
-		
-		for (int i = 0; i < N; i++) {
-			sel[idx] = i+1;
-			perm(idx+1, sidx+1);
-			perm(idx+1, sidx);
+		for(int i=0; i<N; i++) {
+			selected[depth] = i+1;
+			perm(depth+1);
 		}
-	} //perm
+	}
 }
