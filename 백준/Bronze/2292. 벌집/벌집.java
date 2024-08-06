@@ -1,22 +1,25 @@
 import java.util.Scanner;
- 
+
 public class Main {
+	static int answer = 0;
 	public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        
-        int N = sc.nextInt();
-        int count = 1; //겹 수
-        int range = 2; //범위(최솟값 기준)
-        
-        if(N == 1){
-            System.out.println(1);
-        } else{
-            while(range<=N){ //범위가 N보다 커지기 전까지
-                range = range + (6*count); //다음 범위의 최솟값으로 초기화
-                count++;
-            }
-            System.out.println(count);
-        }
-    }
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		find(N, 1, 1);
+		System.out.println(answer);
+	}
+	
+	private static void find(int N, int now, int multiple) {
+		if(N == 1) {
+			answer = 1;
+			return;
+		}
+		
+		if(N > now + (6 * multiple)) {
+			int what = now + (6 * multiple);
+			find(N, what, multiple+1);
+		}else {
+			answer = multiple+1;
+		}
+	}
 }
-    
