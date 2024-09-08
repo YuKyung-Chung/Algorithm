@@ -1,57 +1,52 @@
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
-    static int node; //정점개수
-    static int line; //간선 개수
-    static boolean[] visit;
-    static int[][] arr;
-    static Queue<Integer> q = new LinkedList<>();
-
-
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        node = Integer.parseInt(st.nextToken());
-        line = Integer.parseInt(st.nextToken());
-
-        arr = new int[1001][1001];
-        visit = new boolean[1001];
-
-        //인접행렬 생성
-        for (int i = 0; i < line; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-
-            arr[a][b] = arr[b][a] = 1; //간선 연결
-        }
-        int result = 0;
-        for (int i = 1; i <= node; i++) {
-            if (visit[i] == false) { //방문한 적 없는 노드하면 dfs
-                bfs(i);
-                result++;
-            }
-        }
-        System.out.println(result);
-
-    }
-
-    public static void bfs(int start) {
-        q.add(start);
-        visit[start] = true;
-
-        while (!q.isEmpty()) {
-            int temp = q.poll();
-
-            for (int i = 1; i <= node; i++) {
-                if (arr[temp][i] == 1 && !visit[i]) {
-                    q.add(i);
-                    visit[i] = true;
-                }
-            }
-        }
-
-    }
+	static int N,M,cnt;
+	static ArrayList<Integer>[] arr;
+	static boolean[] visited;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		N = sc.nextInt(); //정점의 개수
+		M = sc.nextInt(); //간선의 개수
+		arr = new ArrayList[N+1];
+		
+		for(int i=0; i<=N; i++) {
+			//초기화
+			arr[i] = new ArrayList<>();
+		}
+		
+		for(int i=0; i<M; i++) {
+			int u = sc.nextInt();
+			int v = sc.nextInt();
+			//무방향 그래프
+			arr[u].add(v);
+			arr[v].add(u);
+		}
+		
+		cnt = 0;
+		visited = new boolean[N+1];
+		for(int i=1; i<=N; i++) {
+			//연결요소 개수 찾기
+			if(!visited[i]) {				
+				DFS(i);
+				cnt++;
+			}
+		}
+		
+		System.out.println(cnt);
+	}//main
+	
+	public static void DFS(int node) {
+		visited[node] = true;
+		
+		for(int i: arr[node]) {
+			if(!visited[i]) {
+				visited[i] = true;
+				DFS(i);
+			}
+		}
+	}
 }
