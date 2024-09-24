@@ -1,35 +1,26 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int[] arr = new int[N+1];
-
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-
-        int[] sum = new int[N+1];
-        sum[1] = arr[1];
-        for (int i = 2; i <= N; i++) {
-            sum[i] = sum[i - 1] + arr[i];
-        }
-
-        int start = 0;
-        int end = 0;
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
-            start = Integer.parseInt(st.nextToken());
-            end = Integer.parseInt(st.nextToken());
-            System.out.println(sum[end] - sum[start - 1]);
-        }
-    }
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int N = sc.nextInt(); //수의 개수
+		int M = sc.nextInt(); //합을 구해야 하는 횟수
+		
+		int[] nums = new int[N+1];
+		int[] S = new int[N+1]; //구간합 저장할 배열
+		
+		S[0] = 0;
+		for(int i=1; i<=N; i++) {
+			nums[i] = sc.nextInt();
+			S[i] = S[i-1] + nums[i]; 
+		}
+		
+		for(int i=0; i<M; i++) {
+			int s = sc.nextInt();
+			int e = sc.nextInt();
+			
+			System.out.println(S[e] - S[s-1]);
+		}
+	}
 }
