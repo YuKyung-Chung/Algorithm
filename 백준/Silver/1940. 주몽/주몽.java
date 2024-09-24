@@ -17,22 +17,16 @@ public class Main {
 		int start = 0;
 		int end = in.length-1;
 		int count = 0;
-		int sum = in[start] + in[end];
 		
 		while(start != end) {
-			if(sum == M) {
+			if(in[start] + in[end] == M) {
 				count++;
 				start++;
-				sum = in[start] + in[end];
 			}
-			else if(sum < M) {
-				sum = sum - in[start];
+			else if(in[start] + in[end] < M) {
 				start++;
-				sum = in[start] + in[end];
-			} else if(sum > M) {
-				sum = sum - in[end];
+			} else if(in[start] + in[end] > M) {
 				end--;
-				sum = sum + in[end];
 			}
 		}
 		System.out.println(count);
