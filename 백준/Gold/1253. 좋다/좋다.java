@@ -1,42 +1,47 @@
-import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-
-        long[] arr = new long[N];
-        int result = 0;
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            arr[i] = Long.parseLong(st.nextToken());
-        }
-        Arrays.sort(arr);
-
-        for (int i = 0; i < N; i++) {
-            int start = 0;
-            int end = N-1;
-            long find = arr[i];
-            //투 포인터 알고리즘
-            while (start < end) {
-                if (arr[start] + arr[end] == find) {
-                    //find는 서로 다른 두 수의 합이어야 함을 체크
-                    if (start != i && end != i) {
-                        result++;
-                        break;
-                    } else if (start == i) {
-                        start++;
-                    } else if (end == i) {
-                        end--;
-                    }
-                } else if (arr[start] + arr[end] < find) {
-                    start++;
-                } else {
-                    end--;
-                }
-            }
-        }
-        System.out.println(result);
-    }
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int N = sc.nextInt();
+		int[] arr = new int[N];
+		
+		for(int i=0; i<N; i++) {
+			arr[i] = sc.nextInt();
+		}
+		
+		Arrays.sort(arr);
+		int count = 0;
+		for(int i=0; i<N; i++) {
+			int start = 0;
+			int end = N-1;
+			
+			while(start != end) {
+				//자신을 제외한 두 수의 합을 확인해야 하므로 i는 건너뛰어야 함
+				if(start == i) {
+					start++;
+					continue;
+				}
+				if(end == i) {
+					end--;
+					continue;
+				}
+				
+				//두 수의 합이 현재 숫자와 같으면 좋은 수 
+				if(arr[start] + arr[end] == arr[i]) {
+						count++;
+						break;
+				} else if(arr[start] + arr[end] < arr[i]) {
+					start++;
+				} else {
+					end--;
+				}
+			}
+		}
+		
+		System.out.println(count);
+		
+	}
 }
