@@ -1,109 +1,76 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int[] myArr;
-    static int[] checkArr;
-    static int checkSecret;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int S = Integer.parseInt(st.nextToken());
-        int P = Integer.parseInt(st.nextToken());
+	static int s_len;
+	static int p_len;
+	static char[] str;
+	static int[] checkArr = new int[4];
+	static int[] myArr = new int[4];
+	static int checkCnt = 0; // {‘A’, ‘C’, ‘G’, ‘T’} 중 최소 개수를 일치한 문자 개수 (0~4)
+	static int answer = 0; // 만들 수 있는 비밀번호 개수
 
-        char[] A = new char[S];
-        checkArr = new int[4];
-        myArr = new int[4];
-        checkSecret = 0;
-        int result = 0;
+	public static void main(String[] args) throws IOException {
 
-        A = br.readLine().toCharArray();
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < 4; i++) {
-            checkArr[i] = Integer.parseInt(st.nextToken());
-            if (checkArr[i] == 0) {
-                checkSecret++;
-            }
-        }
+		// 입력
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		s_len = Integer.parseInt(st.nextToken());
+		p_len = Integer.parseInt(st.nextToken());
+		str = br.readLine().toCharArray(); // DNA 문자열
+		st = new StringTokenizer(br.readLine());
 
-        // 초기 P 부분 문자열 처리 부분
-        for (int i = 0; i < P; i++) {
-            Add(A[i]);
-        }
-        if (checkSecret == 4) {
-            result++;
-        }
-        //슬라이딩 윈도우 처리 부분
-        for (int i = P; i < S; i++) {
-            int j = i-P;
-            Add(A[i]);
-            Remove(A[j]);
-            //4자릿수 관련된 크기가 모두 충족될 때 유효한 비밀번호
-            if (checkSecret == 4) {
-                result++;
-            }
-        }
-        System.out.println(result);
-    }
+		for (int i = 0; i < 4; i++) {
+			checkArr[i] = Integer.parseInt(st.nextToken());
+		}
 
-    // 새로 들어온 문자를 처리하는 함수
-    public static void Add(char c) {
-        switch (c) {
-            case 'A':
-                myArr[0]++;
-                if (myArr[0] == checkArr[0]) {
-                    checkSecret++;
-                }
-                break;
-            case 'C':
-                myArr[1]++;
-                if (myArr[1] == checkArr[1]) {
-                    checkSecret++;
-                }
-                break;
-            case 'G':
-                myArr[2]++;
-                if (myArr[2] == checkArr[2]) {
-                    checkSecret++;
-                }
-                break;
-            case 'T':
-                myArr[3]++;
-                if (myArr[3] == checkArr[3]) {
-                    checkSecret++;
-                }
-                break;
-        }
-    }
+		for (int i = 0; i < p_len; i++) { // 첫 부분문자열 셋팅 (0~p_len-1) 까지
+			if (str[i]=='A') myArr[0]++;
+			if (str[i]=='C') myArr[1]++;
+			if (str[i]=='G') myArr[2]++;
+			if (str[i]=='T') myArr[3]++;
+		}
 
-    // 제거되는 문자를 처리하는 함수
-    public static void Remove(char c) {
-        switch (c) {
-            case 'A':
-                if (myArr[0] == checkArr[0]) {
-                    checkSecret--;
-                }
-                myArr[0]--;
-                break;
-            case 'C':
-                if (myArr[1] == checkArr[1]) {
-                    checkSecret--;
-                }
-                myArr[1]--;
-                break;
-            case 'G':
-                if (myArr[2] == checkArr[2]) {
-                    checkSecret--;
-                }
-                myArr[2]--;
-                break;
-            case 'T':
-                if (myArr[3] == checkArr[3]) {
-                    checkSecret--;
-                }
-                myArr[3]--;
-                break;
-        }
-    }
+		if (checkCounting())// {‘A’, ‘C’, ‘G’, ‘T’} 4개의 문자가 모두 최소개수를 만족했다면
+			answer++; // 만들 수 있는 비밀번호 개수 증가
+		
+		int i = -1;
+		/**
+		 * 부분문자열 만들기 => 이전 부분문자열의 첫 문자는 제외하고, 끝에서 1문자를 더 추가한다.
+		 */
+		for (int j = p_len; j < s_len; j++) { // 부분문자열의 끝을 나타내는 위치
+			i = j - p_len; // 이전 부분문자열의 시작을 나타내는 위치
+			
+			// 이전 부분문자열의 시작 문자 제외
+			if (str[i]=='A') myArr[0]--;
+			if (str[i]=='C') myArr[1]--;
+			if (str[i]=='G') myArr[2]--;
+			if (str[i]=='T') myArr[3]--;
+			
+			// 이전 부분문자열의 끝에서 1문자 추가
+			if (str[j]=='A') myArr[0]++;
+			if (str[j]=='C') myArr[1]++;
+			if (str[j]=='G') myArr[2]++;
+			if (str[j]=='T') myArr[3]++;
+			
+			if (checkCounting())// {‘A’, ‘C’, ‘G’, ‘T’} 4개의 문자가 모두 최소개수를 만족했다면
+				answer++; // 만들 수 있는 비밀번호 개수 증가
+		}
+
+		System.out.println(answer);
+
+	}
+
+	public static boolean checkCounting() {
+		for (int i = 0; i < 4; i++) {
+			if (myArr[i] < checkArr[i])
+				return false;
+		}
+		return true;
+	}
+
 }
