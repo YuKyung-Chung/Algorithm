@@ -1,44 +1,35 @@
-class Solution {
-    int[][] memo;
-    
-    int solution(int[][] land) {
-        int n = land.length;
+class Solution 
+{
+    int solution(int[][] land) 
+    {
+        int answer = 0;
 
-        // DP 배열은 land 배열을 그대로 활용
-        for (int i = 1; i < n; i++) {
-            // 각 열에 대해서 이전 행에서 같은 열을 제외한 최대값을 더함
-            land[i][0] += Math.max(land[i-1][1], Math.max(land[i-1][2], land[i-1][3]));
-            land[i][1] += Math.max(land[i-1][0], Math.max(land[i-1][2], land[i-1][3]));
-            land[i][2] += Math.max(land[i-1][0], Math.max(land[i-1][1], land[i-1][3]));
-            land[i][3] += Math.max(land[i-1][0], Math.max(land[i-1][1], land[i-1][2]));
+        // 각 행의 각 열마다 최대값을 저장해 나간다. 
+        int dp[][] = new int[land.length + 1][4];
+
+        // 각 행의 대한 계산
+        for(int i = 1; i <= land.length; i++)
+        {
+            // 각 열에 대한 계산
+            for(int j = 0; j < 4; j++)
+            {
+                // 현재 열을 제외한 나머지 열에 대한 최댓값을 계산한다
+                for(int k = 0; k < 4; k++)
+                {
+                    // 현재 열은 무시
+                    if(k == j)
+                    {
+                        continue;
+                    }
+
+                    // 현재 열을 제외한 나머지 열에 대한 계산값을 비교하고 최댓값을 기록한다. 
+                    dp[i][j] = Math.max(dp[i][j], land[i - 1][j] + dp[i - 1][k]);
+
+                    answer = Math.max(answer, dp[i][j]);
+                }
+            }
         }
 
-        // 마지막 행에서 가장 큰 값이 최대 점수
-        return Math.max(land[n-1][0], Math.max(land[n-1][1], Math.max(land[n-1][2], land[n-1][3])));
+        return answer;
     }
-    
-//     public int find(int row, int col, int[][] land){
-//         //현재 행이 땅을 벗어나면 종료
-//         if(row == land.length){
-//             return 0;
-//         }
-        
-//         //이미 계산한 적 있는 경로라면, 그 값을 반환
-//         if(memo[row][col] != 0) return memo[row][col];
-        
-//         int maxScore = 0;
-//         //다음행으로 이동할 때 다른 열 탐색
-//         for(int nextCol = 0; nextCol < 4; nextCol++){
-//             if(nextCol != col){
-//                 maxScore = Math.max(maxScore, find(row+1, nextCol, land));
-//             }
-//         }
-        
-//         //현재 칸의 점수 + 다음 경로에서 얻을 수 있는 최대 점수 메모
-//         memo[row][col] = land[row][col] + maxScore;
-        
-//         return memo[row][col];
-//     }
-    
-    
 }
