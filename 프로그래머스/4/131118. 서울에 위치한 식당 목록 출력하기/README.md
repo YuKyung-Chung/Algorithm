@@ -1,6 +1,6 @@
 # [level 4] 서울에 위치한 식당 목록 출력하기 - 131118 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131118?language=oracle) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131118?language=mysql) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 07월 08일 17:20:30
+2024년 10월 18일 16:39:03
 
 ### 문제 설명
 
