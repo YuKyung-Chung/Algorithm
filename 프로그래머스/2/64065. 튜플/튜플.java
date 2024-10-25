@@ -18,7 +18,13 @@ class Solution {
         }
         
         //리스트 크기 순으로 정렬
-        Collections.sort(list, Comparator.comparingInt(Set::size));
+        // Collections.sort(list, Comparator.comparingInt(Set::size));
+        Collections.sort(list, new Comparator<Set<Integer>>(){
+           @Override
+            public int compare(Set<Integer> o1, Set<Integer> o2){
+                return o1.size() - o2.size();
+            }
+        });
         
         Set<Integer> answerSet = new LinkedHashSet<>();
         for(Set<Integer> l : list){
