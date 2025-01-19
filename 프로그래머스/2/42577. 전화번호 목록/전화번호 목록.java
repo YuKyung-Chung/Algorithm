@@ -1,13 +1,20 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 class Solution {
     public boolean solution(String[] phone_book) {
         boolean answer = true;
-        Arrays.sort(phone_book);
         
-        for(int i=0; i<phone_book.length-1; i++){
-            if(phone_book[i+1].startsWith(phone_book[i])){
+        List<String> list = new ArrayList<>();
+        for(String str : phone_book){
+            list.add(str);
+        }
+        Collections.sort(list);
+        
+        for(int i=0; i<list.size()-1; i++){
+            String now = list.get(i);
+            String next = list.get(i+1);
+            if(next.startsWith(now)){
                 answer = false;
             }
         }
