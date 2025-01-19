@@ -1,24 +1,26 @@
 class Solution {
-    static int maxCount = -1;
-    
+    static boolean[] visited;
+    static int dlength;
+    static int maxCount;
     public int solution(int k, int[][] dungeons) {
-        boolean[] visited = new boolean[dungeons.length];
-        explore(k, dungeons, visited, 0);
+        dlength = dungeons.length;
+        visited = new boolean[dlength];
+        dfs(0, 0, k, visited, dungeons);
+        
         return maxCount;
     }
     
-    public void explore(int k, int[][] dungeons, boolean[] visited, int count){
-        //최대 탐험 개수 갱신
-        maxCount = Math.max(maxCount, count);
+    public static void dfs(int i, int answer, int k, boolean[] visited, int[][] dungeons){
         
-        for(int i=0; i< dungeons.length; i++){
-            //최소 필요 피로도 이상이고, 아직 방문하지 않았다면 탐험 가능
-            if(k >= dungeons[i][0] && !visited[i]){
-                visited[i] = true;
-                explore(k-dungeons[i][1], dungeons, visited, count+1);
-                visited[i] = false;
+        // 현재 탐험한 던전 수를 최댓값과 비교
+        maxCount = Math.max(maxCount, answer);
+        
+        for(int j=0; j<dlength; j++){
+            if(!visited[j] && k >= dungeons[j][0]){
+                visited[j] = true;
+                dfs(j, answer+1, k-dungeons[j][1], visited, dungeons);
+                visited[j] = false;
             }
         }
-        
     }
 }
