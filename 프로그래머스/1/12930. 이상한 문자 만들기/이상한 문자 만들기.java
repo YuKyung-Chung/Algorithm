@@ -1,26 +1,19 @@
-import java.util.*;
-
 class Solution {
     public String solution(String s) {
         StringBuilder answer = new StringBuilder();
-        String[] words = s.split(" ", -1); // 공백을 유지하면서 문자열을 나눔
-        
-        for(int i=0; i<words.length; i++){
-            StringBuilder sb2 = new StringBuilder();
-            
-            for(int j=0; j<words[i].length(); j++){
-                char c = words[i].charAt(j);
-                if(j % 2 == 0){
-                    sb2.append(Character.toUpperCase(c));
-                }
-                else{
-                    sb2.append(Character.toLowerCase(c));
-                }
-            }
-            
-            answer.append(sb2);
-            if(i< words.length - 1){
-                answer.append(" "); //원래 공백 유지
+        int idx = 0; // 단어 내부에서의 인덱스
+
+        for (char c : s.toCharArray()) {
+            if (c == ' ') {
+                idx = 0; // 공백이면 단어 내부 인덱스 초기화
+                answer.append(c);
+            } else {
+                // 짝수 인덱스는 대문자, 홀수 인덱스는 소문자
+                if (idx % 2 == 0)
+                    answer.append(Character.toUpperCase(c));
+                else
+                    answer.append(Character.toLowerCase(c));
+                idx++;
             }
         }
         return answer.toString();
