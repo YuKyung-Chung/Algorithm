@@ -1,17 +1,17 @@
 class Solution {
     public long solution(int price, int money, int count) {
-        long answer = 0;
-        long sum = 0;
-        //count 횟수만큼 놀이기구 탑승
-        for(int i=1; i <= count; i++){
+        long answer = -1;
+        long sum = 0;//필요한 총 이용료
+        for(int i=1; i<=count; i++){
             sum += price * i;
         }
-        if(sum - money > 0){
-            answer = sum - money;
-        }
-        else{
+        if(money - sum >= 0){
             answer = 0;
         }
+        else{
+            answer = sum - money;
+        }
+
         return answer;
     }
 }
