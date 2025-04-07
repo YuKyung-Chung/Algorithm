@@ -1,20 +1,15 @@
+import java.util.*;
+
 class Solution {
     public String solution(int[] food) {
         String answer = "";
+        StringBuilder sb = new StringBuilder();
         
         for(int i=1; i<food.length; i++){
-            for(int j=1; j<= food[i] / 2; j++){
-                answer += i;   
-            }
-        }
-        String newString = "";
-        for(int i=answer.length()-1; i>=0; i--){
-            newString += answer.substring(i,i+1);
+            sb.append(String.valueOf(i).repeat(food[i]/2));  
         }
         
-        
-        answer += 0;
-        answer += newString;
+        answer = sb.toString() + "0" + sb.reverse();
         
         return answer;
     }
