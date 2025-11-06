@@ -1,8 +1,10 @@
+from itertools import combinations as comb
+
 def solution(numbers):
     answer = []
-    results = set()
-    for i in range(len(numbers)):
-        for j in range(i+1, len(numbers)):
-            results.add(numbers[i] + numbers[j])
-    answer = sorted(results)
-    return answer
+    answer_set = set()
+    
+    for i,j in comb(numbers, 2):
+        answer_set.add(i+j)
+    
+    return sorted(list(answer_set))
