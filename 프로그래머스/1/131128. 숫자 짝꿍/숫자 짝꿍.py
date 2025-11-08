@@ -2,22 +2,24 @@ from collections import Counter
 
 def solution(X, Y):
     same_num = []
-    x_count = Counter(X)
-    y_count = Counter(Y)
+    cX = Counter(X)
+    cY = Counter(Y)
     
-    for digit in x_count:
-        if digit in y_count:
-            # 최소 공통 개수만큼 append
-            same_num.extend([digit] * min(x_count[digit], y_count[digit]))
+    # 짝꿍 만들기
+    for k in range(9, -1, -1):
+        str_k = str(k)
+        
+        # k 라는 숫자가 공통으로 나타나는 횟수 계산
+        common_count = min(cX.get(str_k, 0), cY.get(str_k,0))
+        
+        same_num.append(str_k * common_count)
+        
+    result = ''.join(same_num)
     
-    # 겹치는 수 없으면 바로 -1 return
-    if not same_num:
+    if not result:
         return "-1"
-    
-    same_num.sort(reverse = True)
-    
-    # 0이 여러개일 경우 '0'으로
-    if same_num[0] == '0':
+    if result[0] == '0':
         return "0"
     
-    return ''.join(same_num)
+    
+    return result
