@@ -1,16 +1,8 @@
 from collections import Counter
 
-s = input().upper()
-s = Counter(s)
-result = sorted(s.items(), key=lambda x:x[1], reverse=True)
+s = Counter(input().upper())
+max_freq = max(s.values())
 
-max_num = -1
-answer = ""
-for i, j in result:
-    if max_num < j:
-        max_num = j
-        answer = i
-    elif max_num == j:
-        answer = "?"
-
-print(answer)
+# 최대 빈도를 가진 문자가 2개 이상이면 "?"
+find = [ch for ch, f in s.items() if f == max_freq]
+print(find[0] if len(find) == 1 else "?")
