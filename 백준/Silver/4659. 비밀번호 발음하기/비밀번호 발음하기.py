@@ -1,7 +1,8 @@
 # 모음 하나를 반드시 포함해야 한다.
 def condition1(str):
+    moeum = set("aeiou")
     for s in str:
-        if s == 'a' or s=='e' or s=='i' or s=='o' or s=='u':
+        if s in moeum:
             return True
     return False
 
