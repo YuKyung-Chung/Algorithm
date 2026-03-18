@@ -1,50 +1,52 @@
-from collections import deque
+N,M = map(int, input().split())
+r,c,d = map(int, input().split())
 
-N, M = map(int, input().split())
-x, y, d = map(int, input().split())
-room = [list(map(int, input().split())) for _ in range(N)]
+# 북, 동,남, 서
+dx = [-1,0,1,0]
+dy = [0,1,0,-1]
 
-# d: 0북 1동 2남 3서
-dx = [-1, 0, 1, 0]
-dy = [0, 1, 0, -1]
+maps = []
+for i in range(N):
+    maps.append(list(map(int, input().split())))
 
-q = deque()
-q.append((x, y, d))
+result = 0 # 로봇청소기가 청소하는 칸의 개수
+cleaned = [[0]*M for _ in range(N)]
 
-ans = 0
+# 반시계방향으로 회전
+def turnLeft(d):
+    if d == 0:
+        return 3
+    else:
+        return d-1
 
-while q:
-    x, y, d = q.popleft()
+def start(x,y,d):
+    global result
+    # 현재 칸이 아직 청소되지 않은 경우, 청소하기
+    if not cleaned[x][y]:
+        cleaned[x][y] = 1
+        result += 1
 
-    # 1) 현재 칸 청소(0이면 청소해서 2로 변경)
-    if room[x][y] == 0:
-        room[x][y] = 2
-        ans += 1
+    # 주변 4칸 중 청소되지 않은 빈칸 없는 경우
+    for i in range(4):
+        d = turnLeft(d)
+        nx = dx[d] + x
+        ny = dy[d] + y
 
-    found = False
+        if nx >= 0 and nx < N and ny >= 0 and ny <M:
+            # 청소되지 않은 빈칸 있는 경우
+            if not cleaned[nx][ny] and maps[nx][ny] == 0:
+                start(nx, ny,d)
+                return
 
-    # 3) 주변 4방향 탐색: 왼쪽 회전 -> 앞칸이 0이면 전진 후 1번으로
-    for _ in range(4):
-        d = (d + 3) % 4  # 반시계(왼쪽) 회전
-        nx = x + dx[d]
-        ny = y + dy[d]
+    # 4방향 다 못갔을 때
+    bx = x - dx[d]
+    by = y - dy[d]
 
-        if room[nx][ny] == 0:
-            q.append((nx, ny, d))  # 다음 상태 큐에 넣고
-            found = True
-            break
+    if 0 <= bx < N and 0 <= by < M and maps[bx][by] == 0:
+        start(bx, by,d)
+    else:
+        return
 
-    # 2) 청소되지 않은 빈칸이 주변에 없으면 후진
-    if not found:
-        back = (d + 2) % 4
-        bx = x + dx[back]
-        by = y + dy[back]
 
-        # 뒤가 벽이면 종료
-        if room[bx][by] == 1:
-            break
-
-        # 후진은 방향 유지
-        q.append((bx, by, d))
-
-print(ans)
+start(r, c,d)
+print(result)
