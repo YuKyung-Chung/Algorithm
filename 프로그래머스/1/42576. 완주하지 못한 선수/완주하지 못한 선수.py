@@ -1,12 +1,15 @@
 from collections import Counter
-
 def solution(participant, completion):
     answer = ''
     
-    p_counter = Counter(participant)
-    c_counter = Counter(completion)
+    d = Counter(participant)
     
-    diff = p_counter - c_counter
-    answer = list(diff.keys())[0]
-    
+    for person in completion:
+        if person in d:
+            d[person] -= 1
+                
+    for k,v in d.items():
+        if v != 0:
+            answer = k
+            
     return answer
