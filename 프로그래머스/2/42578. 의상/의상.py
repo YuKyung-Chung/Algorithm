@@ -1,17 +1,13 @@
+from collections import Counter
 def solution(clothes):
     answer = 0
-    #종류 별 아이템 이름 모으기
-    dict = {}
-    
-    for name, kind in clothes:
-        # kind가 없으면 빈 리스트 생성, 있으면 기존 리스트 반환
-        dict.setdefault(kind, []).append(name)
+    c = Counter()
+    for cloth in clothes:
+        c[cloth[1]] += 1
         
-    # 입지않는 경우 포함 곱셈
-    total = 1
-    for count in dict.values():
-        total *= len(count)+1
+    multiple = 1
+    for i in c.items():
+        multiple *= i[1]+1
+
     
-    # 아무것도 안입는 경우 제외
-    answer = total -1
-    return answer
+    return multiple-1
