@@ -1,28 +1,25 @@
 def solution(tickets):
     answer = []
     tickets = sorted(tickets, key=lambda x:(x[0], x[1]))
-    visited = [False] * len(tickets)
+    N = len(tickets)
+    path = ["ICN"]
+    visited = [False] * N
     
-    
-    curr = ''
-    def dfs(path, count):
-        if count == len(tickets):
+    def dfs(current):
+        if len(path) == N+1:
             answer.append(path[:])
-            return
+            return True
         
-        for i in range(len(tickets)):
-            if not visited[i] and tickets[i][0] == path[-1]:
+        for i in range(N):
+            if not visited[i] and tickets[i][0] == current:
                 visited[i] = True
                 path.append(tickets[i][1])
-                dfs(path, count+1)
-                path.pop()
+                if dfs(tickets[i][1]):
+                    return
                 visited[i] = False
-        
+                path.pop()
     
-    for i in range(len(tickets)):
-        if tickets[i][0] == "ICN":
-            visited[i] = True
-            dfs(["ICN", tickets[i][1]], 1)
-            visited[i] = False
-        
+    
+    dfs("ICN")
+
     return answer[0]
