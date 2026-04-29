@@ -1,16 +1,15 @@
 from collections import Counter
 def solution(nums):
     answer = 0
-    N = (len(nums))//2
     
-    nums = Counter(nums)
-    # print(len(nums))
+    # 고를수있는 폰켓몬수
+    N = len(nums)/2
+    poketmons = Counter(nums)
     
-    
-    print(N)
-    if(len(nums) >= N):
+    if len(poketmons) > N:
         answer = N
     else:
-        answer = len(nums)
+        answer = len(poketmons)
     
     return answer
+
