@@ -1,26 +1,22 @@
+from collections import defaultdict
 def solution(genres, plays):
-    # 1) 장르별 노래 목록 구축
-    song_dict = {}
-    for i, genre in enumerate(genres):
-        song_dict.setdefault(genre, []).append((i, plays[i]))
-
-    # 2) 장르별 총 재생 횟수 계산
-    genre_totals = {}
-    for genre, lst in song_dict.items():
-        total = 0
-        for idx, play in lst:
-            total += play
-        genre_totals[genre] = total
-    
-    # 3) 장르를 총 재생 횟수 내림차순 정렬
-    sorted_genres = sorted(genre_totals,key=lambda g: genre_totals[g],reverse=True)
-    
     answer = []
-    # 4) 각 장르에서 상위 2곡씩 뽑아 answer에 추가
-    for genre in sorted_genres:
-        # (i, play)를 재생횟수 내림차순, i 오름차순으로 정렬
-        songs = sorted(song_dict[genre],key=lambda x: (-x[1], x[0]))
-        # 최대 2개 인덱스만 뽑아서 answer에 붙이기
-        answer.extend(idx for idx, _ in songs[:2])
+    g_dict = defaultdict(lambda: [0, []])
     
+    for i, (g, p) in enumerate(zip(genres, plays)):
+        g_dict[g][0] += p # 총 재생수
+        g_dict[g][1].append((i,p)) # (인덱스, 재생수)
+    
+    # 속한 노래가 많이 재생된 장르 먼저 수록
+    sorted_genres = sorted(g_dict.items(), key=lambda x: x[1][0], reverse = True)
+    print(sorted_genres)
+    for genre, (total, songs) in sorted_genres:
+        # 장르 내에서 많이 재생된 노래 먼저 수록
+        # 장르 내에서 재생 횟수 같은 노래 중에서 고유 번호 낮은 노래 먼저 수록
+        sorted_songs = sorted(songs, key=lambda x:(-x[1], x[0]))
+    
+        answer += [i for i, p in sorted_songs[:2]]
+    
+    
+#     print(g_dict)
     return answer
