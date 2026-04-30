@@ -1,12 +1,20 @@
 def solution(n, lost, reserve):
-    # 여벌이 있지만 도난당한 사람 제외
-    lost_set = set(lost) - set(reserve)
-    reserve_set = set(reserve) - set(lost)
+    overlap = set(lost) & set(reserve)
+    lost = [x for x in lost if x not in overlap]
+    reserve = [x for x in reserve if x not in overlap]
+    answer = n - len(lost)
     
-    for r in sorted(reserve_set):
-        if(r-1) in lost_set:
-            lost_set.remove(r-1)
-        elif (r+1) in lost_set:
-            lost_set.remove(r+1)
-            
-    return n - len(lost_set)
+    for i in range(1, n+1):
+        if i in lost:
+            if i-1 in reserve:
+                reserve.remove(i-1)
+                lost.remove(i)
+                answer += 1
+                continue
+            elif i+1 in reserve:
+                reserve.remove(i+1)
+                lost.remove(i)
+                answer += 1
+                continue
+    
+    return answer
