@@ -2,7 +2,6 @@ from itertools import product
 
 def solution(n, infection, edges, k):
     answer = 0
-    
     graph = [[] for _ in range(n+1)]
     
     for x,y,pipe_type in edges:
@@ -11,25 +10,6 @@ def solution(n, infection, edges, k):
     
     for length in range(1, k+1):
         for order in product([1,2,3], repeat=length):
-            
-            infected = set()
-            infected.add(infection)
-            
-            for pipe_type in order:
-                from itertools import product
-
-def solution(n, infection, edges, k):
-    answer = 0
-    
-    graph = [[] for _ in range(n+1)]
-    
-    for x,y,pipe_type in edges:
-        graph[x].append((y,pipe_type))
-        graph[y].append((x,pipe_type))
-    
-    for length in range(1, k+1):
-        for order in product([1,2,3], repeat=length):
-            
             infected = set()
             infected.add(infection)
             
