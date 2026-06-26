@@ -1,13 +1,18 @@
 def solution(s):
     answer = True
-    stack = []
+    total = 0
+    if s[0] == ')':
+        return False
     
-    for ch in s:
-        if ch == '(':
-            stack.append(ch)
-        else:
-            if not stack:
-                return False
-            stack.pop()
-
-    return len(stack) == 0
+    for i in s:
+        if i == '(':
+            total += 1
+        if i == ')':
+            total += -1
+        if total < 0:
+            return False
+        
+    if total == 0:
+        return True
+    else:
+        return False
