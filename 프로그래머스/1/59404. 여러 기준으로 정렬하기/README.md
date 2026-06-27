@@ -1,10 +1,10 @@
 # [level 1] 여러 기준으로 정렬하기 - 59404 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59404?language=oracle) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59404) 
 
 ### 성능 요약
 
-메모리: 0.0 MB, 시간: 0.00 ms
+메모리: undefined, 시간: 
 
 ### 구분
 
@@ -12,11 +12,11 @@
 
 ### 채점결과
 
-Empty
+합계: 100.0 / 100.0
 
 ### 제출 일자
 
-2024년 07월 08일 19:05:39
+2026년 06월 27일 17:15:58
 
 ### 문제 설명
 
