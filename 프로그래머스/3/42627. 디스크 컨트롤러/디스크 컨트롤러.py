@@ -1,25 +1,45 @@
 import heapq
+
 def solution(jobs):
     answer = 0
-    # 1. jobs를 요청 시각 기준 정렬
-    jobs.sort()
-    current_time = 0
-    total_sum = 0
-    q = []
-    i = 0
-    while i < len(jobs) or q:
+    
+    # 작업 번호를 붙여서 저장
+    # jobs[i] = [요청시각, 소요시간]
+    jobs = [(request_time, duration, i) for i, (request_time, duration) in enumerate(jobs)]
+    
+    # 요청 시각 기준으로 정렬
+    jobs.sort(key=lambda x: x[0])
+    
+    heap = []
+    time = 0          # 현재 시각
+    idx = 0           # 아직 힙에 넣지 않은 작업의 인덱스
+    count = 0         # 처리 완료한 작업 수
+    total_time = 0    # 반환 시간 합
+    
+    while count < len(jobs):
         
-        # 현재 시간보다 작은 요청시간이 있다면 대기열에 추가
-        while i < len(jobs) and current_time >= jobs[i][0]:
-            heapq.heappush(q, (jobs[i][1], jobs[i][0]))
-            i += 1
+        # 현재 시각까지 요청된 작업들을 모두 대기 큐에 넣음
+        while idx < len(jobs) and jobs[idx][0] <= time:
+            request_time, duration, job_id = jobs[idx]
+            
+            # 우선순위: 소요시간, 요청시각, 작업번호
+            heapq.heappush(heap, (duration, request_time, job_id))
+            idx += 1
         
-        # 대기열에 작업이 있다면
-        if q:
-            duration, start_time = heapq.heappop(q)
-            current_time += duration
-            total_sum += current_time - start_time
-        # 작업 없다면 다음 작업 도착 시간으로 현재 시간만 갱신
+        # 대기 큐에 작업이 있으면 가장 우선순위 높은 작업 수행
+        if heap:
+            duration, request_time, job_id = heapq.heappop(heap)
+            
+            # 현재 시각에서 duration만큼 작업 수행
+            time += duration
+            
+            # 반환 시간 = 작업 종료 시각 - 요청 시각
+            total_time += time - request_time
+            
+            count += 1
+        
+        # 대기 큐가 비어 있으면 다음 작업 요청 시각으로 시간 이동
         else:
-            current_time = jobs[i][0]
-    return total_sum // len(jobs)
+            time = jobs[idx][0]
+    
+    return total_time // len(jobs)
