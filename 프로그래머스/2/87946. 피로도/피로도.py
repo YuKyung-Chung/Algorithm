@@ -1,19 +1,22 @@
+from itertools import permutations
+
 def solution(k, dungeons):
     answer = -1
-    visited = [False] * len(dungeons)
-    count = 0
-    
-    def explore(dungeons, visited, count, k):
-        max_count = count # 현재까지의 최대값 저장
-        for j in range(len(dungeons)):
-            if not visited[j] and dungeons[j][0] <= k:
-                visited[j] = True
-                max_count = max(max_count, explore(dungeons, visited, count+1, k - dungeons[j][1]))
-                visited[j] = False
-           
-        return max_count
-    
-    for i in range(len(dungeons)):
-        answer = max(answer, explore(dungeons, visited, 0, k))
-        
+    dungeons = list(permutations(dungeons))
+    for dungeon in dungeons:
+        now_p = k # 현재 피로도
+        count = 0 # 탐험 진행한 던전 수
+        for d in dungeon:
+            # 최소 필요 피로도, 소모 피로도
+            min_p, consume_p = d
+            # 최소 필요 피로도가 현재 피로도보다 크고
+            # 소모 피로도가 현재 피로도보다 작을 경우 탐험 진행
+            if now_p >= min_p and now_p >= consume_p:
+                # 탐험 진행
+                now_p -= consume_p
+                count += 1
+            else:
+                answer = max(answer, count)
+                break
+        answer = max(answer, count)
     return answer
