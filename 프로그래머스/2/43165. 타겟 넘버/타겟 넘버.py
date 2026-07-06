@@ -1,20 +1,18 @@
 def solution(numbers, target):
     answer = 0
     
-    def dfs(cnt, mid_sum):
+    def dfs(idx, number_sum):
         nonlocal answer
         
-        # 탈출조건
-        if cnt == len(numbers):
-            if mid_sum == target:
+        if idx == len(numbers):
+            if number_sum == target:
                 answer += 1
             return
             
-        dfs(cnt+1, mid_sum + numbers[cnt])
-        dfs(cnt+1, mid_sum - numbers[cnt])
+        dfs(idx+1, number_sum + numbers[idx])
+        dfs(idx+1, number_sum - numbers[idx])
+        
     
-    
-    
-    dfs(0, 0)
+    dfs(0,0)
     
     return answer
