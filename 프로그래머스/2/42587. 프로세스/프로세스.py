@@ -1,20 +1,30 @@
 from collections import deque
 def solution(priorities, location):
-    answer = 0 # 실행 순서
-    q = deque([])
+    answer = 0
+    q = deque()
+    
     for i in range(len(priorities)):
-        q.append((i, priorities[i])) # (location, priority)
+        if i == location:
+            q.append([priorities[i], 1])
+        else:
+            q.append([priorities[i], 0])
     
     while q:
-        index, priority = q.popleft()
+        p, find = q.popleft()
         
-        # q안에 priority보다 높은 값 있으면 맨 뒤로 넣기
-        if any(priority < other_priority for _, other_priority in q):
-            q.append((index, priority))
+        # 만약 q에 p보다 우선순위 높은게 있는지 확인
+        has_higher = False
+        
+        for other_p, _ in q:
+            if other_p > p:
+                has_higher = True
+                break
+                # q.append([p,find])
+        if has_higher:
+            q.append([p,find])
         else:
-            answer += 1 # 실행순서 하나 올리기
-        
-            if index == location:
+            answer += 1
+            if find == 1:
                 return answer
     
     return answer
