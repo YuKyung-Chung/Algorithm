@@ -1,13 +1,13 @@
 from collections import Counter
-def solution(clothes):
-    answer = 0
-    c = Counter()
-    for cloth in clothes:
-        c[cloth[1]] += 1
-        
-    multiple = 1
-    for i in c.items():
-        multiple *= i[1]+1
 
+def solution(clothes):
+    answer = 1
+    counter = Counter()
     
-    return multiple-1
+    for name, kind in clothes:
+        counter[kind] += 1
+        
+    for item in counter.values():
+        answer *= (item+1)
+        
+    return answer - 1
